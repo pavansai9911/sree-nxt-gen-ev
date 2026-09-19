@@ -568,6 +568,13 @@ body.menu-open .menu { opacity: 1; transform: none; pointer-events: auto; }
   margin-top: 40px; padding-top: 20px; border-top: 1px solid #1f2123;
   display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; font-size: .8rem;
 }
+.foot-social { display: flex; gap: 10px; }
+.foot-social a {
+  display: flex; align-items: center; justify-content: center;
+  width: 34px; height: 34px; border-radius: 50%; border: 1px solid #2a2d2f; color: #9aa0a4;
+}
+.foot-social a:hover { border-color: var(--volt); color: var(--volt); }
+.foot-social svg { width: 16px; height: 16px; }
 
 /* 11 ─ Utilities --------------------------------------------------------- */
 .mb0 { margin-bottom: 0; }

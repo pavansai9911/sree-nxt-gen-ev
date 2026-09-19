@@ -48,6 +48,16 @@ WhatsApp button on every page updates. There is nothing to change in the HTML.
 > confirmed, both Call and WhatsApp use **7671 9313 44**, the number supplied for
 > WhatsApp.
 
+### Adding the Instagram or email icons
+
+```js
+instagram: "",   // full profile URL, e.g. "https://instagram.com/yourhandle"
+email: "",       // e.g. "hello@example.com"
+```
+
+Both are blank by default, so the icons stay hidden in the footer. Fill in either one
+and its icon appears at the bottom of every page automatically — nothing else to edit.
+
 ### Changing the Google Maps location
 
 ```js

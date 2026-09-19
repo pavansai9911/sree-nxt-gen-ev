@@ -11,6 +11,10 @@ window.SITE = {
      phone      : number the "Call" button dials. Digits only, with 91.
      whatsapp   : number the "WhatsApp" button opens. Digits only, with 91.
      mapsLink   : the Google Maps short link for the "Directions" button.
+     instagram  : full profile URL, e.g. "https://instagram.com/yourhandle".
+                  Leave "" to keep the Instagram icon hidden in the footer.
+     email      : contact address, e.g. "hello@example.com".
+                  Leave "" to keep the email icon hidden in the footer.
      ------------------------------------------------------------------- */
   name: "Sree NXT GEN EV",
   phone: "917671931344",
@@ -20,9 +24,30 @@ window.SITE = {
   address: "Pappula Veedhi, near Sarada bridge, opposite Town Police Station, Anakapalle, Andhra Pradesh 531001",
   addressShort: "Anakapalle main road, near Sarada bridge",
   hours: "Monday to Saturday, 9:30 am – 8:30 pm · Sunday, 10 am – 2 pm",
+  instagram: "",
+  email: "",
 
   /* Message that gets pre-typed when someone taps WhatsApp */
-  waDefault: "Hello Sree NXT GEN EV, I saw your website and I would like to know more about your electric vehicles."
+  waDefault: "Hello Sree NXT GEN EV, I saw your website and I would like to know more about your electric vehicles.",
+
+  /* --- Structured data ----------------------------------------------------
+     Feeds the "AutoDealer" schema block on every page (search engine info,
+     not visible on the page itself) so it always matches the details above
+     instead of being typed out separately on each page.
+     ------------------------------------------------------------------- */
+  businessDescription: "Electric scooters, bikes and cargo vehicles assembled in-house, with service and spares, in Anakapalle, Andhra Pradesh.",
+  ogImage: "assets/img/brand/og-cover.jpg",
+  addressParts: {
+    street: "Pappula Veedhi, near Sarada bridge, opposite Town Police Station",
+    locality: "Anakapalle",
+    region: "Andhra Pradesh",
+    postalCode: "531001",
+    country: "IN"
+  },
+  hoursSpec: [
+    { days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"], opens: "09:30", closes: "20:30" },
+    { days: "Sunday", opens: "10:00", closes: "14:00" }
+  ]
 };
 
 /* --------------------------------------------------------------------------

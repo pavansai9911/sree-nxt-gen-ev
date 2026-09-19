@@ -47,6 +47,48 @@
     $$("[data-fill='address']").forEach(function (el) { el.textContent = S.address; });
     $$("[data-fill='hours']").forEach(function (el) { el.textContent = S.hours; });
     $$("[data-fill='year']").forEach(function (el) { el.textContent = new Date().getFullYear(); });
+
+    /* Instagram / email icons only show once a real value is set in
+       data.js, so the footer stays clean until the owner has one to add. */
+    $$("[data-link='instagram']").forEach(function (el) {
+      if (S.instagram) { el.href = S.instagram; el.target = "_blank"; el.rel = "noopener"; el.hidden = false; }
+      else { el.hidden = true; }
+    });
+    $$("[data-link='email']").forEach(function (el) {
+      if (S.email) { el.href = "mailto:" + S.email; el.hidden = false; }
+      else { el.hidden = true; }
+    });
+  }
+
+  /* ---------- Structured data --------------------------------------------
+     Fills in the "AutoDealer" JSON-LD block (read by search engines, not
+     shown on the page) from data.js, so it can never drift out of sync
+     with the phone number / address printed on the page itself.
+     ------------------------------------------------------------------- */
+  function schema() {
+    var el = $("#ld-business");
+    if (!el) return;
+    var ap = S.addressParts || {};
+    el.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "AutoDealer",
+      "name": S.name,
+      "description": S.businessDescription,
+      "image": S.ogImage,
+      "telephone": "+" + S.phone,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": ap.street,
+        "addressLocality": ap.locality,
+        "addressRegion": ap.region,
+        "postalCode": ap.postalCode,
+        "addressCountry": ap.country
+      },
+      "hasMap": S.mapsLink,
+      "openingHoursSpecification": (S.hoursSpec || []).map(function (h) {
+        return { "@type": "OpeningHoursSpecification", "dayOfWeek": h.days, "opens": h.opens, "closes": h.closes };
+      })
+    }, null, 2);
   }
 
   /* ---------- Mobile menu ---------------------------------------------- */
@@ -88,7 +130,7 @@
       slides.forEach(function (s, k) { s.classList.toggle("is-active", k === i); });
       dots.forEach(function (d, k) { d.setAttribute("aria-selected", k === i ? "true" : "false"); });
     }
-    function play() { if (!still) { stop(); timer = setInterval(function () { go(i + 1); }, 6500); } }
+    function play() { if (!still) { stop(); timer = setInterval(function () { go(i + 1); }, 3000); } }
     function stop() { if (timer) { clearInterval(timer); timer = null; } }
 
     dots.forEach(function (d, k) {
@@ -433,6 +475,7 @@
   /* ---------- Start ------------------------------------------------------ */
   document.addEventListener("DOMContentLoaded", function () {
     wireLinks();
+    schema();
     menu();
     hero();
     renderBuilds();
