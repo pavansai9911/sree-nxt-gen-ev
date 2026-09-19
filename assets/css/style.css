@@ -576,3 +576,80 @@ body.menu-open .menu { opacity: 1; transform: none; pointer-events: auto; }
 @media print {
   .site-head, .actionbar, .wa-float, .hero__dots { display: none !important; }
 }
+
+/* ==========================================================================
+   ADD THIS — EV vs petrol savings calculator
+   Uses the tokens already defined at the top of this file. No new colours.
+   ========================================================================== */
+
+.calc { display: grid; gap: 26px; }
+@media (min-width: 900px) { .calc { grid-template-columns: 1fr 1.15fr; gap: 48px; align-items: center; } }
+
+/* Slider panel */
+.calc__panel { border: 1px solid var(--line); padding: 24px 20px 20px; }
+@media (min-width: 768px) { .calc__panel { padding: 30px 28px 26px; } }
+
+.calc__label { display: block; font-size: .84rem; font-weight: 600; margin-bottom: 6px; }
+.calc__value {
+  display: block; font-weight: 800; font-stretch: var(--wide);
+  font-size: clamp(2rem, 8vw, 2.8rem); line-height: 1; letter-spacing: -0.02em;
+  margin-bottom: 18px;
+}
+.calc__value span { font-size: .38em; font-weight: 500; font-stretch: 100%; color: var(--steel); }
+
+.calc__range {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; height: 4px; background: var(--line); outline: none; margin: 6px 0 10px;
+  border-radius: 0; cursor: pointer;
+}
+.calc__range::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 28px; height: 28px; background: var(--volt); border: 2px solid var(--black);
+  cursor: grab; border-radius: 0;
+}
+.calc__range::-moz-range-thumb {
+  width: 28px; height: 28px; background: var(--volt); border: 2px solid var(--black);
+  cursor: grab; border-radius: 0;
+}
+.calc__range:focus-visible { outline: 3px solid var(--volt); outline-offset: 6px; }
+.calc__scale { display: flex; justify-content: space-between; font-size: .76rem; color: var(--steel); }
+
+/* Chart area */
+.calc__chart { position: relative; height: 260px; }
+@media (min-width: 768px) { .calc__chart { height: 320px; } }
+.calc__chart canvas { width: 100% !important; height: 100% !important; }
+
+/* Shown only when the Chart.js file cannot be reached */
+.calc__fallback { display: none; height: 100%; }
+.calc__fallback.is-on { display: flex; align-items: flex-end; gap: 28px; padding-bottom: 34px; }
+.calc__bar { flex: 1; position: relative; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; }
+.calc__bar i { display: block; width: 100%; transition: height .25s var(--ease); font-style: normal; }
+.calc__bar--petrol i { background: var(--flare); }
+.calc__bar--ev i { background: var(--volt); }
+.calc__bar b { display: block; font-size: 1rem; font-weight: 800; margin-bottom: 6px; text-align: center; }
+.calc__bar em {
+  position: absolute; left: 0; right: 0; bottom: -28px; text-align: center;
+  font-style: normal; font-size: .8rem; color: var(--steel);
+}
+
+/* Result cards — same corner notch as the vehicle cards */
+.calc__cards { display: grid; gap: var(--gap); margin-top: 32px; }
+@media (min-width: 760px) { .calc__cards { grid-template-columns: repeat(3, 1fr); } }
+.calc__card {
+  background: var(--black); color: var(--paper); padding: 24px 22px 26px;
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
+}
+.calc__card--volt { background: var(--volt); color: #0a0a0a; }
+.calc__card h4 { font-size: .8rem; letter-spacing: .1em; margin-bottom: 10px; font-stretch: 100%; }
+.calc__card--volt h4 { color: #1d2a0c; }
+.calc__card b {
+  display: block; font-weight: 800; font-stretch: var(--wide);
+  font-size: clamp(1.9rem, 7vw, 2.5rem); line-height: 1; letter-spacing: -0.02em;
+}
+.calc__card p { margin: 10px 0 0; font-size: .86rem; color: #a7adb1; }
+.calc__card--volt p { color: #2c3d13; }
+.calc__card .calc__vs { display: flex; gap: 18px; margin-top: 4px; }
+.calc__card .calc__vs div b { font-size: clamp(1.3rem, 5vw, 1.7rem); }
+.calc__card .calc__vs div span { font-size: .78rem; color: #a7adb1; }
+
+.calc__note { margin: 20px 0 0; font-size: .82rem; color: var(--steel); }

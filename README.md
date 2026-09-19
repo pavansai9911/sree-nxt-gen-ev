@@ -91,6 +91,27 @@ and change the values:
 Reviews and FAQs work the same way, in `window.REVIEWS` and `window.FAQS` further down
 the same file.
 
+### Changing the savings calculator prices
+
+The petrol and power prices behind the "What you would stop spending on petrol"
+section are **not** in `data.js`. They sit at the top of the calculator block in
+`assets/js/main.js`, marked `// ADD THIS`:
+
+```js
+var PETROL_PRICE = 100;             // rupees per litre
+var PETROL_MILEAGE = 60;            // km per litre
+var POWER_UNIT_PRICE = 5;           // rupees per unit
+var EV_UNITS_PER_FULL_CHARGE = 3;   // units for a full charge
+var EV_RANGE_PER_FULL_CHARGE = 100; // km on a full charge
+```
+
+Change the numbers when prices move. If you change them, also update the grey line of
+text under the calculator in `index.html`, which spells the same figures out for
+visitors.
+
+The chart uses Chart.js, loaded from a CDN. If that ever fails to load, the section
+falls back to two plain bars drawn in CSS and every number still works.
+
 ---
 
 ## 3. Replacing the images

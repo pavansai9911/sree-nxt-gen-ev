@@ -362,6 +362,58 @@
   </div>
 </section>
 
+<!-- ─── ADD THIS: EV vs petrol savings calculator ──────────────────────── -->
+<section class="chapter chapter--tight" id="savings-calculator">
+  <div class="wrap">
+    <div class="head">
+      <h2>What you would stop spending on petrol</h2>
+      <p class="lede">Move the slider to the distance you ride on a normal day. The numbers update as you go.</p>
+    </div>
+
+    <div class="calc">
+      <div class="calc__panel">
+        <label class="calc__label" for="calcKm">Average distance you ride</label>
+        <output class="calc__value" id="calcKmOut" for="calcKm" aria-live="polite">40 <span>KM / day</span></output>
+        <input class="calc__range" type="range" id="calcKm" min="5" max="150" step="5" value="40"
+               aria-label="Average kilometres ridden per day">
+        <div class="calc__scale"><span>5 km</span><span>150 km</span></div>
+      </div>
+
+      <div class="calc__chart">
+        <canvas id="calcChart" role="img" aria-label="Monthly running cost, petrol against electric"></canvas>
+        <!-- Used only if the chart library cannot be reached -->
+        <div class="calc__fallback" id="calcFallback" aria-hidden="true">
+          <div class="calc__bar calc__bar--petrol"><b id="fbPetrolVal">₹0</b><i id="fbPetrol"></i><em>Petrol</em></div>
+          <div class="calc__bar calc__bar--ev"><b id="fbEvVal">₹0</b><i id="fbEv"></i><em>Electric</em></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="calc__cards">
+      <div class="calc__card calc__card--volt">
+        <h4>Monthly savings</h4>
+        <b id="calcMonthly">₹0</b>
+        <p id="calcMonthlyNote">Petrol ₹0 against electric ₹0</p>
+      </div>
+      <div class="calc__card">
+        <h4>Yearly savings</h4>
+        <b id="calcYearly">₹0</b>
+        <p>Enough to cover a good part of the vehicle in the first few years.</p>
+      </div>
+      <div class="calc__card">
+        <h4>How far ₹100 takes you</h4>
+        <div class="calc__vs">
+          <div><b id="calcKmPetrol">0 km</b><span>Petrol</span></div>
+          <div><b id="calcKmEv">0 km</b><span>Electric</span></div>
+        </div>
+        <p>Same hundred rupees, many times the distance.</p>
+      </div>
+    </div>
+
+    <p class="calc__note">Worked out at petrol ₹100 a litre and 60 km to the litre, and power ₹5 a unit with 3 units for a full charge giving 100 km. Your own figures will vary with riding style and traffic.</p>
+  </div>
+</section>
+
 </main>
 
 <!-- ─── Footer ─────────────────────────────────────────────────────────── -->
@@ -470,6 +522,9 @@
   ]
 }
 </script>
+
+<!-- ADD THIS: chart library for the savings calculator -->
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
 <script src="assets/js/data.js"></script>
 <script src="assets/js/main.js"></script>

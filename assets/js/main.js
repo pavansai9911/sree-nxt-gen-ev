@@ -296,6 +296,123 @@
     });
   }
 
+  /* ---------- ADD THIS: EV vs petrol savings calculator -----------------
+     Admin configuration. These five numbers are the only things to change
+     when fuel or power prices move.
+     ------------------------------------------------------------------- */
+  var PETROL_PRICE = 100;             // rupees per litre
+  var PETROL_MILEAGE = 60;            // km per litre
+  var POWER_UNIT_PRICE = 5;           // rupees per unit
+  var EV_UNITS_PER_FULL_CHARGE = 3;   // units for a full charge
+  var EV_RANGE_PER_FULL_CHARGE = 100; // km on a full charge
+
+  function rupees(n) {
+    return "\u20B9" + Math.round(n).toLocaleString("en-IN");
+  }
+
+  function savingsCalculator() {
+    var slider = $("#calcKm");
+    if (!slider) return;
+
+    var petrolCostPerKm = PETROL_PRICE / PETROL_MILEAGE;
+    var evCostPerKm = (EV_UNITS_PER_FULL_CHARGE * POWER_UNIT_PRICE) / EV_RANGE_PER_FULL_CHARGE;
+
+    var out = $("#calcKmOut");
+    var canvas = $("#calcChart");
+    var fallback = $("#calcFallback");
+    var chart = null;
+
+    // Chart.js is loaded with defer, so it is ready by DOMContentLoaded.
+    // If the file could not be reached, fall back to two plain CSS bars.
+    if (window.Chart && canvas) {
+      chart = new window.Chart(canvas.getContext("2d"), {
+        type: "bar",
+        data: {
+          labels: ["Petrol", "Electric"],
+          datasets: [{
+            label: "Cost a month",
+            data: [0, 0],
+            backgroundColor: ["#e23b26", "#8cc63f"],
+            borderWidth: 0,
+            barPercentage: 0.62,
+            categoryPercentage: 0.7
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          animation: { duration: 250 },
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: "#000",
+              padding: 10,
+              displayColors: false,
+              callbacks: {
+                label: function (c) { return rupees(c.parsed.y) + " a month"; }
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              border: { color: "#dcdedd" },
+              ticks: { color: "#0a0a0a", font: { family: "Archivo, Arial, sans-serif", size: 13, weight: "700" } }
+            },
+            y: {
+              beginAtZero: true,
+              grid: { color: "#eceeed" },
+              border: { display: false },
+              ticks: {
+                maxTicksLimit: 6,
+                color: "#6b7074",
+                font: { family: "Archivo, Arial, sans-serif", size: 12 },
+                callback: function (v) { return rupees(v); }
+              }
+            }
+          }
+        }
+      });
+    } else if (fallback) {
+      if (canvas) canvas.style.display = "none";
+      fallback.classList.add("is-on");
+      fallback.setAttribute("aria-hidden", "false");
+    }
+
+    function update() {
+      var dailyKm = parseInt(slider.value, 10);
+      var monthlyKm = dailyKm * 30;
+      var monthlyPetrolCost = monthlyKm * petrolCostPerKm;
+      var monthlyEvCost = monthlyKm * evCostPerKm;
+      var monthlySaving = monthlyPetrolCost - monthlyEvCost;
+      var yearlySaving = monthlySaving * 12;
+
+      out.innerHTML = dailyKm + " <span>KM / day</span>";
+
+      $("#calcMonthly").textContent = rupees(monthlySaving);
+      $("#calcYearly").textContent = rupees(yearlySaving);
+      $("#calcMonthlyNote").textContent =
+        "Petrol " + rupees(monthlyPetrolCost) + " against electric " + rupees(monthlyEvCost);
+
+      $("#calcKmPetrol").textContent = Math.round(100 / petrolCostPerKm) + " km";
+      $("#calcKmEv").textContent = Math.round(100 / evCostPerKm) + " km";
+
+      if (chart) {
+        chart.data.datasets[0].data = [monthlyPetrolCost, monthlyEvCost];
+        chart.update();
+      } else if (fallback) {
+        var top = Math.max(monthlyPetrolCost, monthlyEvCost, 1);
+        $("#fbPetrol").style.height = (monthlyPetrolCost / top * 100) + "%";
+        $("#fbEv").style.height = Math.max(monthlyEvCost / top * 100, 1.5) + "%";
+        $("#fbPetrolVal").textContent = rupees(monthlyPetrolCost);
+        $("#fbEvVal").textContent = rupees(monthlyEvCost);
+      }
+    }
+
+    slider.addEventListener("input", update);
+    update();
+  }
+
   /* ---------- Start ------------------------------------------------------ */
   document.addEventListener("DOMContentLoaded", function () {
     wireLinks();
@@ -307,5 +424,6 @@
     renderFaqs();
     form();
     gallery();
+    savingsCalculator(); // ADD THIS
   });
 })();
