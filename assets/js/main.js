@@ -17,6 +17,19 @@
     return "https://wa.me/" + S.whatsapp + "?text=" + encodeURIComponent(message || S.waDefault);
   }
 
+  /* Homepage link worked out from wherever the site is actually hosted,
+     so it is correct on GitHub Pages, a subfolder or a custom domain. */
+  function homeUrl() {
+    return new URL("index.html", document.baseURI).href;
+  }
+
+  function shareLink() {
+    var message = "Check out " + S.name + " — electric scooters and bikes in Anakapalle: " + homeUrl();
+    /* No phone number in the URL, so WhatsApp opens its own contact
+       picker and lets the visitor choose who to share the link with. */
+    return "https://api.whatsapp.com/send?text=" + encodeURIComponent(message);
+  }
+
   function wireLinks() {
     $$("[data-link='call']").forEach(function (el) { el.href = "tel:+" + S.phone; });
     $$("[data-link='maps']").forEach(function (el) {
@@ -24,6 +37,10 @@
     });
     $$("[data-link='whatsapp']").forEach(function (el) {
       el.href = waLink(el.getAttribute("data-msg"));
+      el.target = "_blank"; el.rel = "noopener";
+    });
+    $$("[data-link='share']").forEach(function (el) {
+      el.href = shareLink();
       el.target = "_blank"; el.rel = "noopener";
     });
     $$("[data-fill='phone']").forEach(function (el) { el.textContent = S.phoneDisplay; });

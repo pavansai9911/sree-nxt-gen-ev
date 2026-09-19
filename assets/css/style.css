@@ -508,19 +508,24 @@ body.menu-open .menu { opacity: 1; transform: none; pointer-events: auto; }
 /* 9 ─ Mobile action bar -------------------------------------------------- */
 .actionbar {
   position: fixed; left: 0; right: 0; bottom: 0; z-index: 100;
-  display: grid; grid-template-columns: repeat(3, 1fr);
+  display: grid; grid-template-columns: repeat(4, 1fr);
   background: var(--black);
   border-top: 1px solid #26292b;
+  box-shadow: 0 -6px 20px rgba(0,0,0,.3);
   padding-bottom: env(safe-area-inset-bottom);
 }
 .actionbar a {
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
   height: var(--bar-h); color: var(--paper);
-  font-size: .72rem; font-weight: 700; letter-spacing: .01em;
+  font-size: .66rem; font-weight: 700; letter-spacing: .01em;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color .15s var(--ease), opacity .15s var(--ease);
 }
+.actionbar a:active { opacity: .65; }
 .actionbar a + a { border-left: 1px solid #26292b; }
-.actionbar svg { width: 20px; height: 20px; }
+.actionbar svg { width: 19px; height: 19px; }
 .actionbar .ab-wa { background: var(--volt); color: #0a0a0a; }
+.actionbar .ab-wa:active { background: var(--volt-dark); opacity: 1; }
 @media (min-width: 768px) { .actionbar { display: none; } }
 
 /* Desktop floating WhatsApp */
@@ -534,6 +539,22 @@ body.menu-open .menu { opacity: 1; transform: none; pointer-events: auto; }
 .wa-float svg { width: 22px; height: 22px; }
 @media (min-width: 768px) { .wa-float { display: inline-flex; } }
 .wa-float:hover { background: #9ad64a; }
+
+/* Floating share — always on, shares the homepage link to any WhatsApp contact */
+.share-float {
+  display: inline-flex; align-items: center; justify-content: center;
+  position: fixed; right: 16px; z-index: 100;
+  bottom: calc(var(--bar-h) + env(safe-area-inset-bottom) + 16px);
+  width: 50px; height: 50px;
+  background: var(--black); color: var(--paper);
+  border: 1px solid #2c2f31;
+  box-shadow: 0 8px 24px rgba(0,0,0,.35);
+  transition: background-color .15s var(--ease), opacity .15s var(--ease);
+}
+.share-float svg { width: 20px; height: 20px; }
+.share-float:hover { background: #222527; }
+.share-float:active { opacity: .7; }
+@media (min-width: 768px) { .share-float { right: 24px; bottom: 92px; } }
 
 /* 10 ─ Footer ------------------------------------------------------------ */
 .site-foot { background: var(--black); color: #9aa0a4; padding-block: 56px 32px; font-size: .92rem; }
@@ -574,7 +595,7 @@ body.menu-open .menu { opacity: 1; transform: none; pointer-events: auto; }
 }
 
 @media print {
-  .site-head, .actionbar, .wa-float, .hero__dots { display: none !important; }
+  .site-head, .actionbar, .wa-float, .share-float, .hero__dots { display: none !important; }
 }
 
 /* ==========================================================================
